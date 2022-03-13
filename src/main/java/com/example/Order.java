@@ -1,3 +1,5 @@
+package com.example;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -17,7 +19,8 @@ public class Order {
     public String comment;
     public String[] color;
 
-    public Order(String firstName, String lastName, String address, int metroStation, String phone, int rentTime, String deliveryDate, String comment, String[] color) {
+    public Order(String firstName, String lastName, String address, int metroStation, String phone, int rentTime,
+                 String deliveryDate, String comment, String[] color) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;

@@ -1,3 +1,5 @@
+package com.example;
+
 import io.qameta.allure.Story;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
@@ -23,7 +25,7 @@ public class NewOrderTest {
     private final String[] color;
     private final int expectedCodResponse;
 
-    public NewOrderTest (String[] color, int expectedCodResponse){
+    public NewOrderTest(String[] color, int expectedCodResponse){
         this.color = color;
         this.expectedCodResponse = expectedCodResponse;
 

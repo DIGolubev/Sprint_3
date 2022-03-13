@@ -1,3 +1,5 @@
+package com.example;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Story;
 import io.qameta.allure.junit4.DisplayName;
@@ -22,7 +24,6 @@ public class NewCourierTest {
     public void setUp(){
         courierClient =  new CourierClient();
         courier = Courier.getRandomCourier();
-
 
     }
 
@@ -111,7 +112,5 @@ public class NewCourierTest {
         assertEquals("Курьер создан с логином, который уже есть", courierCreateDoubleLogin,
                 responseCourierWithExistLogin.then().extract().path("message"));
     }
-
-
 
 }

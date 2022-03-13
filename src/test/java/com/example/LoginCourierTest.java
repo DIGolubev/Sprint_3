@@ -1,3 +1,5 @@
+package com.example;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Story;
 import io.qameta.allure.junit4.DisplayName;
