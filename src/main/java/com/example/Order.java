@@ -30,22 +30,19 @@ public class Order {
         this.deliveryDate = deliveryDate;
         this.comment = comment;
         this.color = color;
-
     }
 
     /**
-     *
      * @return создает случайный заказ
      */
     @Step("Создать случайные параметры для заказа")
-    public static Order getRandomOrder(String[] getColor){
-
+    public static Order getRandomOrder(String[] getColor) {
         String firstName = RandomStringUtils.randomAlphabetic(10);
         String lastName = RandomStringUtils.randomAlphabetic(10);
         String address = RandomStringUtils.randomAlphabetic(10);
-        int metroStation = (int) (Math.random()*237);
+        int metroStation = (int) (Math.random() * 237);
         String phone = RandomStringUtils.randomAlphabetic(11);
-        int rentTime = (int) (Math.random()*7);
+        int rentTime = (int) (Math.random() * 7);
         String comment = RandomStringUtils.randomAlphabetic(10);
 
         GregorianCalendar gc = new GregorianCalendar();
@@ -67,7 +64,6 @@ public class Order {
     }
 
     public static int randBetween(int start, int end) {
-        return start + (int)Math.round(Math.random() * (end - start));
+        return start + (int) Math.round(Math.random() * (end - start));
     }
-
 }

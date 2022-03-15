@@ -10,15 +10,12 @@ import org.junit.runners.Parameterized;
 
 import java.util.Arrays;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 @RunWith(Parameterized.class)
 @Story("Создание заказа")
 public class NewOrderTest {
-
     public CourierClient courierClient;
     public Order order;
 
@@ -28,7 +25,6 @@ public class NewOrderTest {
     public NewOrderTest(String[] color, int expectedCodResponse){
         this.color = color;
         this.expectedCodResponse = expectedCodResponse;
-
     }
 
     @Parameterized.Parameters
@@ -50,7 +46,6 @@ public class NewOrderTest {
     @Test
     @DisplayName("Сделать заказ с различными цветами")
     public void orderCreateWithColor (){
-
         order = Order.getRandomOrder(color);
         Response response = courierClient.order(order);
         int actualCodResponse = response.statusCode();
@@ -67,7 +62,6 @@ public class NewOrderTest {
         Response response = courierClient.order(order);
         int isTrack = response.then().extract().path("track");
 
-        assertThat("Заказ не создан, не найден track",isTrack,is(not(0)));
+        assertNotSame("Заказ не создан, не найден track",isTrack,0);
     }
-
 }

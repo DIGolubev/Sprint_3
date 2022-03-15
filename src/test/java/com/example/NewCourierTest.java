@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 @Story("Создание курьера")
 public class NewCourierTest {
-
     private CourierClient courierClient;
     private Courier courier;
     private Response response;
@@ -21,23 +20,21 @@ public class NewCourierTest {
     private final String courierLogin = RandomStringUtils.randomAlphabetic(10);
 
     @Before
-    public void setUp(){
-        courierClient =  new CourierClient();
+    public void setUp() {
+        courierClient = new CourierClient();
         courier = Courier.getRandomCourier();
-
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         int actualCodResponse = response.statusCode();
         int expectedCodResponse = 201;
 
-        if (actualCodResponse == expectedCodResponse){
+        if (actualCodResponse == expectedCodResponse) {
             int courierId = courierClient.login(CourierCredentials.from(courier)).then().extract().path("id");
             courierClient.delete(courierId);
             System.out.println("Курьер удален");
-        }
-        else{
+        } else {
             System.out.println("Нет курьеров для удаления");
         }
     }
@@ -54,10 +51,10 @@ public class NewCourierTest {
     @Test
     @DisplayName("Создание двух одинаковых курьеров")
     @Description("Нельзя создать двух одинаковых курьеров")
-    public void twoIdenticalCouriersNotCreate(){
+    public void twoIdenticalCouriersNotCreate() {
         response = courierClient.create(courier);
         Response responseCreateIdenticalCouriers = courierClient
-                .create(new Courier(courier.getLogin(),courier.getPassword(),courier.getFirstName()));
+                .create(new Courier(courier.getLogin(), courier.getPassword(), courier.getFirstName()));
 
         String messageIdenticalCouriers = "Этот логин уже используется. Попробуйте другой.";
         assertEquals("Созданы два одинаковых курьера", messageIdenticalCouriers,
@@ -67,33 +64,30 @@ public class NewCourierTest {
     @Test
     @DisplayName("Создание курьера без логина")
     @Description("Если создать курьера без логина, возвращается ошибка")
-    public void loginMustBeFilledIn(){
-
+    public void loginMustBeFilledIn() {
         courier = new Courier("",
-                              RandomStringUtils.randomAlphabetic(10),
-                              RandomStringUtils.randomAlphabetic(10));
+                RandomStringUtils.randomAlphabetic(10),
+                RandomStringUtils.randomAlphabetic(10));
         response = courierClient.create(courier);
 
         String courierWithoutLogin = "Недостаточно данных для создания учетной записи";
         assertEquals("Создан курьер без логина",
-                courierWithoutLogin,response.then().extract().path("message"));
+                courierWithoutLogin, response.then().extract().path("message"));
     }
 
     @Test
     @DisplayName("Создание курьера без пароля")
     @Description("Если создать курьера без пароля, возвращается ошибка")
-    public void passwordMustBeFilledIn(){
-
+    public void passwordMustBeFilledIn() {
         courier = new Courier(RandomStringUtils.randomAlphabetic(10),
-                      "",
-                              RandomStringUtils.randomAlphabetic(10));
+                "",
+                RandomStringUtils.randomAlphabetic(10));
         response = courierClient.create(courier);
 
         String courierWithoutLogin = "Недостаточно данных для создания учетной записи";
         assertEquals("Создан курьер без пароля",
-                courierWithoutLogin,response.then().extract().path("message"));
+                courierWithoutLogin, response.then().extract().path("message"));
     }
-
 
     @Test
     @DisplayName("Создание курьера с существующим логином")
@@ -112,5 +106,4 @@ public class NewCourierTest {
         assertEquals("Курьер создан с логином, который уже есть", courierCreateDoubleLogin,
                 responseCourierWithExistLogin.then().extract().path("message"));
     }
-
 }

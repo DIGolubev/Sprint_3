@@ -8,14 +8,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertEquals;
 
 @Story("Логин курьера")
 public class LoginCourierTest {
-
     private CourierClient courierClient;
     CourierCredentials courierCredentials;
     private Response responseLogin;
@@ -25,23 +22,19 @@ public class LoginCourierTest {
 
     @Before
     public void setUp() {
-
         courierClient = new CourierClient();
         courier = Courier.getRandomCourier();
         courierClient.create(courier);
         courierCredentials = new CourierCredentials();
-
     }
 
     @After
     public void tearDown() {
-
-        if (null != courierId){
+        if (null != courierId) {
             courierClient.delete(courierId);
             courierId = null;
             System.out.println("Курьер удален");
-        }
-        else{
+        } else {
             System.out.println("Нет курьеров для удаления");
         }
     }
@@ -49,63 +42,58 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Авторизация курьера")
     @Description("Курьер может авторизоваться, успешный запрос возвращает id")
-    public void courierLoginSuccess(){
-
+    public void courierLoginSuccess() {
         responseLogin = courierClient.login(CourierCredentials.from(courier));
         courierId = responseLogin.path("id");
 
-        assertThat("Авторизация курьера не успешна",courierId, is(not(0)));
+        assertNotSame("Авторизация курьера не успешна", courierId, 0);
     }
+
     @Test
     @DisplayName("Логин курьера без логина")
     @Description("Если какого-то поля нет (логин), запрос возвращает ошибку")
-    public void courierEmptyLogin(){
-
-        courier = new Courier("",courier.getPassword());
+    public void courierEmptyLogin() {
+        courier = new Courier("", courier.getPassword());
         responseLogin = courierClient.login(CourierCredentials.from(courier));
 
         String messageEmptyLogin = "Недостаточно данных для входа";
-        assertEquals("Ошибка. авторизация курьера без логина",messageEmptyLogin,
+        assertEquals("Ошибка. авторизация курьера без логина", messageEmptyLogin,
                 responseLogin.then().extract().path("message"));
     }
 
     @Test
     @DisplayName("Логин курьера без пароля")
     @Description("Если какого-то поля нет (пароля), запрос возвращает ошибку")
-    public void courierEmptyPassword(){
-
+    public void courierEmptyPassword() {
         courier = new Courier(courier.getLogin(), "");
         responseLogin = courierClient.login(CourierCredentials.from(courier));
 
         String messageEmptyPassword = "Недостаточно данных для входа";
-        assertEquals("Ошибка. авторизация курьера без пароля",messageEmptyPassword,
+        assertEquals("Ошибка. авторизация курьера без пароля", messageEmptyPassword,
                 responseLogin.then().extract().path("message"));
     }
 
     @Test
     @DisplayName("Логин курьера с неверным логином")
     @Description("Если неправильный логин, запрос возвращает ошибку")
-    public void courierInvalidLogin(){
-
+    public void courierInvalidLogin() {
         courier = new Courier(courier.getLogin() + 1, courier.getPassword());
         responseLogin = courierClient.login(CourierCredentials.from(courier));
 
         String messageInvalidLogin = "Учетная запись не найдена";
-        assertEquals("Ошибка. Авторизация с неверным логином",messageInvalidLogin,
+        assertEquals("Ошибка. Авторизация с неверным логином", messageInvalidLogin,
                 responseLogin.then().extract().path("message"));
     }
 
     @Test
     @DisplayName("Логин курьера с неверным паролем")
     @Description("Если неправильный пароль, запрос возвращает ошибку")
-    public void courierInvalidPassword(){
-
+    public void courierInvalidPassword() {
         courier = new Courier(courier.getLogin(), courier.getPassword() + 1);
         responseLogin = courierClient.login(CourierCredentials.from(courier));
 
         String messageInvalidPassword = "Учетная запись не найдена";
-        assertEquals("Ошибка. Авторизация с неверным паролем",messageInvalidPassword,
+        assertEquals("Ошибка. Авторизация с неверным паролем", messageInvalidPassword,
                 responseLogin.then().extract().path("message"));
     }
-
 }
