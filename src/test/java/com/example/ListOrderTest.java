@@ -6,10 +6,8 @@ import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.junit.Assert.assertNotSame;
 
 @Story("Список заказов")
 public class ListOrderTest {
@@ -20,20 +18,18 @@ public class ListOrderTest {
     @Before
     public void setUp() {
         courierClient = new CourierClient();
-        order = new Order("firstName","lastName","address",0,
-                "87776665544",6,"2022-03-13","comment", new String[]{});
-
+        order = new Order("firstName", "lastName", "address", 0,
+                "87776665544", 6, "2022-03-13", "comment", new String[]{});
     }
 
     @Test
     @DisplayName("В тело ответа возвращается список заказов")
-    public void getOrders (){
+    public void getOrders() {
         Response response = courierClient.order(order);
         int track = response.then().extract().path("track");
         Response responseList = courierClient.orderList();
 
-        assertThat("Заказ не создан, не найден track",track,is(not(0)));
-        assertThat("Заказ не найден",responseList.then().extract().path("orders"),not(empty()));
+        assertNotSame("Заказ не создан, не найден track", 0, track);
+        assertNotSame("Заказ не найден", empty(), responseList.then().extract().path("orders"));
     }
-
 }

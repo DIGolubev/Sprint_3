@@ -14,6 +14,7 @@ public class Courier {
         this.password = password;
         this.firstName = firstName;
     }
+
     public Courier(String login, String password) {
         this.login = login;
         this.password = password;
@@ -24,8 +25,7 @@ public class Courier {
      * @return Возвращает курьера с рандомно сгенерированными логином, паролем, именем
      */
     @Step("Создать случайные парамеры для курьера")
-    public static Courier getRandomCourier (){
-
+    public static Courier getRandomCourier() {
         String courierLogin = RandomStringUtils.randomAlphabetic(10);
         String courierPassword = RandomStringUtils.randomAlphabetic(10);
         String courierFirstName = RandomStringUtils.randomAlphabetic(10);
@@ -35,7 +35,6 @@ public class Courier {
         Allure.addAttachment("Имя: ", courierFirstName);
 
         return new Courier(courierLogin, courierPassword, courierFirstName);
-
     }
 
     @Override
@@ -46,14 +45,15 @@ public class Courier {
                 "firstName:" + firstName + "}";
     }
 
-    public String getLogin(){
+    public String getLogin() {
         return login;
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return password;
     }
-    public String getFirstName(){
+
+    public String getFirstName() {
         return firstName;
     }
-
 }
