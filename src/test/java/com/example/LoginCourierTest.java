@@ -41,12 +41,14 @@ public class LoginCourierTest {
 
     @Test
     @DisplayName("Авторизация курьера")
-    @Description("Курьер может авторизоваться, успешный запрос возвращает id")
+    @Description("Курьер может авторизоваться, успешный запрос возвращает id и код ответа 200")
     public void courierLoginSuccess() {
         responseLogin = courierClient.login(CourierCredentials.from(courier));
         courierId = responseLogin.path("id");
 
-        assertNotSame("Авторизация курьера не успешна", courierId, 0);
+        int expectedCodResponse = 200;
+        assertEquals("Код ответа не соответствует 200",expectedCodResponse, responseLogin.statusCode());
+        assertNotSame("Авторизация курьера не успешна", 0, courierId);
     }
 
     @Test

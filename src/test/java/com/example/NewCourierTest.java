@@ -17,6 +17,7 @@ public class NewCourierTest {
     private Courier courier;
     private Response response;
 
+    private final int expectedCodResponse = 201;
     private final String courierLogin = RandomStringUtils.randomAlphabetic(10);
 
     @Before
@@ -28,7 +29,6 @@ public class NewCourierTest {
     @After
     public void tearDown() {
         int actualCodResponse = response.statusCode();
-        int expectedCodResponse = 201;
 
         if (actualCodResponse == expectedCodResponse) {
             int courierId = courierClient.login(CourierCredentials.from(courier)).then().extract().path("id");
@@ -41,10 +41,12 @@ public class NewCourierTest {
 
     @Test
     @DisplayName("Курьера можно создать")
+    @Description("Курьера можно создать, успешный запрос возвращает код ответа 201")
     public void courierCreateSuccess() {
         response = courierClient.create(courier);
         boolean isCourierCreated = true;
 
+        assertEquals("Код ответа не соответствует 201",expectedCodResponse,response.statusCode());
         assertEquals("Курьер не создан", isCourierCreated, response.then().extract().path("ok"));
     }
 

@@ -1,5 +1,6 @@
 package com.example;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.Story;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
@@ -27,24 +28,24 @@ public class NewOrderTest {
         this.expectedCodResponse = expectedCodResponse;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тестовые данные: цвет  = {0}; код = {1}")
     public static Object[][] data() {
         return new Object[][]{
                 {new String[]{},201},
                 {new String[]{"GREY"},201},
-                {new String[]{"BlACK"},201},
-                {new String[]{"GREY","BlACK"},201},
+                {new String[]{"BLACK"},201},
+                {new String[]{"GREY","BLACK"},201},
         };
     }
 
     @Before
     public void setUp() {
         courierClient = new CourierClient();
-
     }
 
     @Test
     @DisplayName("Сделать заказ с различными цветами")
+    @Description("Заказ можно создать, успешный запрос возвращает код ответа 201")
     public void orderCreateWithColor (){
         order = Order.getRandomOrder(color);
         Response response = courierClient.order(order);
@@ -62,6 +63,6 @@ public class NewOrderTest {
         Response response = courierClient.order(order);
         int isTrack = response.then().extract().path("track");
 
-        assertNotSame("Заказ не создан, не найден track",isTrack,0);
+        assertNotSame("Заказ не создан, не найден track",0, isTrack);
     }
 }

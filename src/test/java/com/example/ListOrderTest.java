@@ -29,7 +29,7 @@ public class ListOrderTest {
         int track = response.then().extract().path("track");
         Response responseList = courierClient.orderList();
 
-        assertNotSame("Заказ не создан, не найден track", track, 0);
-        assertNotSame("Заказ не найден", responseList.then().extract().path("orders"), empty());
+        assertNotSame("Заказ не создан, не найден track", 0, track);
+        assertNotSame("Заказ не найден", empty(), responseList.then().extract().path("orders"));
     }
 }
